@@ -1,0 +1,11 @@
+#!/bin/bash
+
+rm -rf range.log ip.log
+
+for cidr in $(cat cidr.txt)
+do
+prips $cidr |cut -d "." -f1,2,3 |sort |uniq >> ip-range.log
+done
+
+cat ip-range.log |sed -e 's/^/echo /g' -e 's#$#\.$(( $RANDOM%255 + 1 )) >> ip-list.log#g' |bash
+

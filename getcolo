@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for ip in $(cat ip-list.log)
+do
+echo 正在测试 $ip
+curl --connect-timeout 1 -m 2 http://$ip/cdn-cgi/trace |grep "h=\|colo=" |tr "\n" "\t" |awk -F'[\t]' '{print $2,$1}' OFS="\t" |sed -e 's/h=//g' -e 's/colo=//g' >> ip-colo.log
+done
+
+sort ip-colo.log -o ip-colo.log

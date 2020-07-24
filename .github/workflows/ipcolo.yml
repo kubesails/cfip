@@ -1,0 +1,37 @@
+name: Github Action
+
+on:
+  watch:
+    types: [started] 
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Initialization environment
+        run: |
+          sudo apt update
+          sudo apt install prips fping -y
+
+      - name: createip
+        run: |
+          sudo bash createip
+
+      - name: getcolo
+        run: |
+          sudo bash getcolo   
+
+      - name: update file and push to remote
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@example.com"
+          git add ip-colo.log
+          git commit -m "Update colo.txt"
+          git push
